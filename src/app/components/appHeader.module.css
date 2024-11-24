@@ -1,0 +1,23 @@
+.appHeader{
+    display: flex;
+    flex-direction: row;
+    /* align-items: end; */
+    justify-content: space-between;
+    margin: 1rem;
+    gap: 1rem;
+    width: 100%;
+}
+
+.appHeaderButtons{
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+}
+
+.appHeaderButtons > button{
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    height: 2rem;
+    width: 4rem;
+    background-color: blue;
+}
