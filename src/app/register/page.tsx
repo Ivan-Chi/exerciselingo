@@ -1,7 +1,7 @@
 import NavSidebar from "../components/NavSidebar";
 import AppHeader from "../components/AppHeader";
 import styles from "./page.module.css";
-import { login, signup } from './action'
+import { signup } from '../login/action'
 
 export default function LoginPage() {
   return (
@@ -16,10 +16,10 @@ export default function LoginPage() {
               <input id="email" name="email" type="email" required />
               <label htmlFor="password">Password:</label>
               <input id="password" name="password" type="password" required />
-              <button formAction={login}>Log in</button>
+              <button formAction={signup}>Sign Up</button>
             </form>
             <div className={styles.register}>
-              <div>Not registered?             <a href="/register" className={styles.registerLink}>Sign up</a></div>
+              <div>Already registered? <a href="/login" className={styles.registerLink}>Log In</a></div>
             </div>
           </div>
         </div>

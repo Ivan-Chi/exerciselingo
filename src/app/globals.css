@@ -1,5 +1,5 @@
 :root {
-  --background: #ffffff;
+  --background: #c3e1fd;
   --foreground: #171717;
 }
 
@@ -31,7 +31,6 @@ body {
 }
 
 a {
-  color: inherit;
   text-decoration: none;
 }
 
