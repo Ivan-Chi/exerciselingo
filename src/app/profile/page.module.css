@@ -1,0 +1,22 @@
+.page{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    height: 100vh; /* fallback */
+    height: 100dvh;
+    font-family: var(--font-chelsea-market);
+    flex-grow: 1;
+}
+
+.hero{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.content{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

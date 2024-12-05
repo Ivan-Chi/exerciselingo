@@ -1,7 +1,8 @@
 import NavSidebar from "../components/NavSidebar";
 import AppHeader from "../components/AppHeader";
 import styles from "./page.module.css";
-import { signup } from '../login/action'
+import { signup } from '../auth/action'
+import Link from "next/link";
 
 export default function LoginPage() {
   return (
@@ -19,7 +20,9 @@ export default function LoginPage() {
               <button formAction={signup}>Sign Up</button>
             </form>
             <div className={styles.register}>
-              <div>Already registered? <a href="/login" className={styles.registerLink}>Log In</a></div>
+              <div>
+                Already registered? <Link href="/login" className={styles.registerLink}>Log In</Link>
+              </div>
             </div>
           </div>
         </div>

@@ -1,13 +1,23 @@
+'use client'
+import Link from 'next/link'
 import Icons from "./Icons"
 import styles from "./NavSidebar.module.css"
 
 export default function NavSidebar() {
     return (
         <div className={styles.navSidebar}>
-            <Icons name="home" size={34}></Icons>
-            <Icons name="goal" size={34}></Icons>
-            <Icons name="profile" size={34}></Icons>
-            <Icons name="history" size={34}></Icons>
+            <Link href="/">
+                <Icons name="home" size={34} />
+            </Link>
+            <Link href="/goals">
+                <Icons name="goal" size={34} />
+            </Link>
+            <Link href="/profile">
+                <Icons name="profile" size={34} />
+            </Link>
+            <Link href="/history">
+                <Icons name="history" size={34} />
+            </Link>
         </div>
-    );
+    )
 }
