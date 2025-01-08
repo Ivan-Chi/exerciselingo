@@ -1,3 +1,5 @@
+import InitializeApp from "../InitializeApp";
+
 export default function ErrorPage() {
-    return <p>Sorry, something went wrong</p>
+    return <InitializeApp><p>Sorry, something went wrong</p></InitializeApp>
 }

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Chelsea_Market, Farro } from "next/font/google";
+import InitializeApp from '@/app/InitializeApp';
+import styles from "./page.module.css";
+import AppHeader from "./components/AppHeader";
+import NavSidebar from "./components/NavSidebar";
 
 const chelsea_Market = Chelsea_Market({
   weight: "400",
@@ -28,7 +32,15 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${chelsea_Market.variable} ${farro.variable}`}>
-        {children}
+        <InitializeApp>
+          <div className={styles.page}>
+            <NavSidebar></NavSidebar>
+            <div className={styles.hero}>
+              <AppHeader></AppHeader>
+              {children}
+            </div>
+          </div>
+        </InitializeApp>
       </body>
     </html>
   );

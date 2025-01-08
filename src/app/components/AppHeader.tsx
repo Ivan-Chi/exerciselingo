@@ -8,7 +8,7 @@ export default async function AppHeader() {
     console.log(session);
 
     if (error) {
-        redirect("/login");
+        redirect("/error");
     }
 
     if(!session) {

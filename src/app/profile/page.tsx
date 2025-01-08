@@ -1,5 +1,3 @@
-import NavSidebar from "../components/NavSidebar";
-import AppHeader from "../components/AppHeader";
 import styles from "./page.module.css";
 import { createClient } from "../../utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -14,16 +12,10 @@ export default async function ProfilePage() {
     }   
 
   return (
-    <div className={styles.page}>
-      <NavSidebar></NavSidebar>
-      <div className={styles.hero}>
-        <AppHeader></AppHeader>
-        <div className={styles.content}>
-            <form action={logout}>
-                <button type="submit">Logout</button>
-            </form>
-        </div>
-      </div>
+    <div className={styles.content}>
+        <form action={logout}>
+            <button type="submit">Logout</button>
+        </form>
     </div>
   )
 }
