@@ -4,14 +4,13 @@ import { createClient } from "../../utils/supabase/server";
 
 export default async function AppHeader() {
     const supabase = await createClient();
-    const { data: {session}, error } = await supabase.auth.getSession();
-    console.log(session);
+    const { data: {user}, error } = await supabase.auth.getUser();
 
     if (error) {
         redirect("/error");
     }
 
-    if(!session) {
+    if(!user) {
         return (
         <div className={styles.appHeader}>
             <h1>Title Placeholder</h1>
@@ -26,7 +25,7 @@ export default async function AppHeader() {
     return (
         <div className={styles.appHeader}>
             <h1>Title Placeholder</h1>
-            <div>Welcome {session.user.email}</div>
+            <div>Welcome {user.email}</div>
         </div>
     );
 }

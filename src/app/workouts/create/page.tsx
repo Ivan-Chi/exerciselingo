@@ -1,33 +1,57 @@
-import { createClient } from "@/utils/supabase/server";
+import ExerciseSelector from "@/app/components/ExerciseSelector";
+import { createClient } from "@/utils/supabase/client";
+import { PostgrestError } from '@supabase/supabase-js';
 
 export default async function CreateWorkout() {
     const supabase = await createClient();
 
-    const { data: exercises, error} = await supabase
-        .from('exercises')
-        .select('*')
-        // FIXME: Random 4
-        .limit(4)
-    
+    const { data: workout_exercises, error } = await supabase
+    .from('workout_exercises')
+    .select(`
+        *,
+        workout_id:workouts(
+            *
+        )
+    `)
+    .limit(4);
+
     if (error) {
-        console.log("Error: ", error);
-        return <div>Error loading exercises.</div>
+        logError(error);
     }
 
-    console.log(exercises);
+    if (!workout_exercises || workout_exercises.length === 0) {
+        const {data: baseExercises, error: baseExercisesError } = await supabase
+        .rpc('get_random_exercises', {num_exercises: 4});
 
-   return (
-        <div>
-            <h1>Create Workout</h1>
+        if (baseExercisesError) {
+            logError(baseExercisesError);
+        }
+
+        if (!baseExercises || baseExercises.length === 0) {
+            logError(new Error('No base exercises found'));
+        }
+        
+        return (
             <div>
-                {exercises.map((exercise) => (
-                    <div key={exercise.id}>
-                        <p>{exercise.name}</p>
-                        <p>{exercise.description}</p>
-                        <p>{exercise.category}</p>
-                    </div>
-                ))}
+                <ExerciseSelector exercises={baseExercises} />
             </div>
+        );
+    }
+
+return (
+    <div>
+        <h1>Create Workout</h1>
+        
+        {/* <ExerciseSelector exercises={exercises} /> */}
+    </div>
+    );
+}
+
+const logError = (error : PostgrestError | null | Error) => {
+    console.log("Error: ", error);
+    return (
+        <div>
+            Failed load
         </div>
-   )
+    );
 }

@@ -5,9 +5,9 @@ import { redirect } from "next/navigation";
 
 export default async function LoginPage() {
   const supabase = await createClient();
-  const { data: { session }, error } = await supabase.auth.getSession();
+  const { data: { user }, error } = await supabase.auth.getUser();
 
-  if (error || !session?.user) {
+  if (error || !user) {
     return (
       <div className={styles.formContainer}>
         <div className={styles.formDiv}>
