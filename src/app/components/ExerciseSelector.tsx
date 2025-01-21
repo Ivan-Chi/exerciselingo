@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
+import styles from "./ExerciseSelector.module.css";
 
 export default function ExerciseSelector ({ exercises }) {
     console.log("exercises", exercises);
@@ -11,10 +12,10 @@ export default function ExerciseSelector ({ exercises }) {
     const handleSelect = (exercise: any) => {
         if (selectedExercises.includes(exercise)) {
             setSelectedExercises(selectedExercises.filter((e) => e !== exercise));
-            console.log("added", selectedExercises);
+            console.log("removed", selectedExercises);
         } else {
             setSelectedExercises([...selectedExercises, exercise]);
-            console.log("removed", selectedExercises);
+            console.log("added", selectedExercises);
 
         }
     };
@@ -54,19 +55,13 @@ export default function ExerciseSelector ({ exercises }) {
             {exercises.map((exercise) => (
                 <div 
                 key={exercise.id} 
-                style={{
-                    border: '1px solid red',
-                    margin: '10px',
-                    padding: '10px',
-                    cursor: 'pointer'
-                }}
+                className={`${styles.exercise} ${selectedExercises.includes(exercise) ? styles.selected : ''}`}
                 onClick={() => {
                     handleSelect(exercise);
                 }}
             >
-                    <div>{exercise.name}</div>
+                    <div>{exercise.name} x{exercise.base_frequency}</div>
                     <div>{exercise.category}</div>
-                    <div>{exercise.base_frequency}</div>
                 </div>
             ))}
             <button onClick={() => startWorkout(selectedExercises)} disabled={selectedExercises.length === 0}>Start Workout with {selectedExercises.length} exercises</button>

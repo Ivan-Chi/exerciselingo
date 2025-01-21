@@ -30,7 +30,7 @@ export default async function CreateWorkout() {
         if (!baseExercises || baseExercises.length === 0) {
             logError(new Error('No base exercises found'));
         }
-        
+
         return (
             <div>
                 <ExerciseSelector exercises={baseExercises} />
@@ -42,7 +42,7 @@ return (
     <div>
         <h1>Create Workout</h1>
         
-        {/* <ExerciseSelector exercises={exercises} /> */}
+        <ExerciseSelector exercises={workout_exercises} />
     </div>
     );
 }
