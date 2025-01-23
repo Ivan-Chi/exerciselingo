@@ -5,18 +5,14 @@ import { useRouter } from "next/navigation"
 import styles from "./ExerciseSelector.module.css";
 
 export default function ExerciseSelector ({ exercises }) {
-    console.log("exercises", exercises);
     const Router = useRouter();
     const [selectedExercises, setSelectedExercises] = useState([]);
 
     const handleSelect = (exercise: any) => {
         if (selectedExercises.includes(exercise)) {
             setSelectedExercises(selectedExercises.filter((e) => e !== exercise));
-            console.log("removed", selectedExercises);
         } else {
             setSelectedExercises([...selectedExercises, exercise]);
-            console.log("added", selectedExercises);
-
         }
     };
 
