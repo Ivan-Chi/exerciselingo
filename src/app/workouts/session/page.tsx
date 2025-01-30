@@ -16,6 +16,8 @@ export default async function WorkoutSession() {
       id,
       created_at,
       workout_exercises!inner (
+        target_sets,
+        target_reps,
         exercise_id,
         exercises (
           id,
@@ -32,7 +34,7 @@ export default async function WorkoutSession() {
         console.log(error);
     }
 
-    // console.log(JSON.stringify(workout));
+    console.log(JSON.stringify(workout));
 
     console.log('Full workout:', workout);
     console.log('Workout exercises:', workout?.workout_exercises);
@@ -53,8 +55,28 @@ export default async function WorkoutSession() {
                 <div key={exercise.exercise_id}>
                     <div>{exercise.exercises.name}</div>
                     <div>{exercise.exercises.description}</div>
+                    <div>{exercise.target_sets} sets</div>
+                    <div>{exercise.target_reps} reps</div>
+                    {[...Array(exercise.target_sets)].map((_, setIndex) => (
+                      <div key={setIndex}>
+                        <div>Set {setIndex + 1}</div>
+                        <div>
+                          <label onToggle={() => updateSetStatus(exercise.id, setIndex)}>
+                            <input type="checkbox" />
+                            <span>Complete</span>
+                          </label>
+                        </div>
+                      </div>
+                    ))}
                 </div>
             ))}
+            <button onClick={() => redirect('/workouts/complete')}>
+              Complete Workout
+            </button>
         </div>
     )
+}
+
+function updateSetStatus(exerciseId: number, setIndex: number) {
+  console.log('Updating set status', exerciseId, setIndex);
 }
