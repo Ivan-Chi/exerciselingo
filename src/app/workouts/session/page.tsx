@@ -25,13 +25,17 @@ export default async function WorkoutSession() {
       )
     `)
     .order('created_at', { ascending: false })
-    .limit(1);
+    .limit(1)
+    .single();
 
     if (error) {
         console.log(error);
     }
 
-    console.log(workout);
+    // console.log(JSON.stringify(workout));
+
+    console.log('Full workout:', workout);
+    console.log('Workout exercises:', workout?.workout_exercises);
 
     if (!workout || workout.length === 0) {
         return(
@@ -45,7 +49,12 @@ export default async function WorkoutSession() {
     return(
         <div>
             <h1>Workout Session</h1>
-            {/* <div>{workout.workout_exercise.exercise_id}</div> */}
+            {workout.workout_exercises.map(exercise => (
+                <div key={exercise.exercise_id}>
+                    <div>{exercise.exercises.name}</div>
+                    <div>{exercise.exercises.description}</div>
+                </div>
+            ))}
         </div>
     )
 }

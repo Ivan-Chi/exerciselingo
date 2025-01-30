@@ -46,8 +46,6 @@ export async function POST(request: Request) {
             order_in_workout: index + 1  // Start from 1 instead of 0 for better readability
         }))
 
-        console.log(body.exercises);
-        console.log("exercisesWithOrder", exercisesWithOrder);
         const { error: exercisesError } = await supabase
             .from('workout_exercises')
             .insert(

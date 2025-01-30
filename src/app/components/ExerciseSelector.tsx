@@ -43,7 +43,7 @@ export default function ExerciseSelector ({ exercises }) {
         setSelectedExercises([]);
 
         // FIXME: fix the redirect to a workout page
-        Router.push('/workouts/create');
+        Router.push('/workouts/session');
     }
 
     return(
