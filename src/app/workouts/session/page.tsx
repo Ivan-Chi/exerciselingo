@@ -54,25 +54,25 @@ export default async function WorkoutSession() {
             {workout.workout_exercises.map(exercise => (
                 <div key={exercise.exercise_id}>
                     <div>{exercise.exercises.name}</div>
-                    <div>{exercise.exercises.description}</div>
+                    <div>{exercise.exercises.description}</div>x
                     <div>{exercise.target_sets} sets</div>
                     <div>{exercise.target_reps} reps</div>
                     {[...Array(exercise.target_sets)].map((_, setIndex) => (
                       <div key={setIndex}>
                         <div>Set {setIndex + 1}</div>
                         <div>
-                          <label onToggle={() => updateSetStatus(exercise.id, setIndex)}>
+                          {/* <label onToggle={() => updateSetStatus(exercise.id, setIndex)}>
                             <input type="checkbox" />
                             <span>Complete</span>
-                          </label>
+                          </label> */}
                         </div>
                       </div>
                     ))}
                 </div>
             ))}
-            <button onClick={() => redirect('/workouts/complete')}>
+            {/* <button onClick={() => redirect('/workouts/complete')}>
               Complete Workout
-            </button>
+            </button> */}
         </div>
     )
 }
