@@ -15,15 +15,14 @@ export default async function History(){
   .select(`
     *
   `)
-  // .not('completed_at', 'is', null)
+  .not('completed_at', 'is', null)
   .eq('profile_id',user.id)
+  .order('created_at', { ascending: false })
   .limit(10);
 
   if (error) {
     console.log(error);
   }
-
-  console.log(JSON.stringify(workout));
 
   if (!workout || workout===null){
     return(
