@@ -18,24 +18,23 @@ type WorkoutDetails = {
     }[];
 };
 
-type WorkoutHistoryDetailsProps = {
+interface PageProps {
     params: {
         workoutID: string;
     };
-};
+    searchParams: { [key: string]: string | string[] | undefined };
+}
 
 export default async function WorkoutHistoryDetails({
-    params
-}: WorkoutHistoryDetailsProps) {
+    params,
+}: PageProps) {
     const { workoutID } = params;
     const supabase = await createClient();
-
     const { data: { user }, error: userError } = await supabase.auth.getUser();
-    
+   
     if (userError) {
         console.log(userError);
     }
-
     if (!user) {
         redirect('/login');
     }
@@ -69,7 +68,7 @@ export default async function WorkoutHistoryDetails({
     }
 
     const typedWorkout = (workout as unknown) as WorkoutDetails;
-
+    
     return (
         <div>
             <h1>Workout Details</h1>
