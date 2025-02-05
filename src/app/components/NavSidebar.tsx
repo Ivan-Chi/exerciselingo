@@ -9,9 +9,6 @@ export default function NavSidebar() {
             <Link href="/">
                 <Icons name="home" size={34} />
             </Link>
-            <Link href="/goals">
-                <Icons name="goal" size={34} />
-            </Link>
             <Link href="/profile">
                 <Icons name="profile" size={34} />
             </Link>

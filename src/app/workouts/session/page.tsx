@@ -88,3 +88,4 @@ export default async function WorkoutSession() {
         <WorkoutSessionClient initialWorkout={validatedWorkout} />
     );
 }
+
