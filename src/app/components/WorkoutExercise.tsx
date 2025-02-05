@@ -1,6 +1,5 @@
-// WorkoutExercise.tsx
 "use client";
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 type WorkoutExerciseProps = {
     exercise: {
@@ -19,7 +18,7 @@ type WorkoutExerciseProps = {
 
 export default function WorkoutExercise({ exercise, setIndex, onRepsUpdate }: WorkoutExerciseProps) {
     const [completedReps, setCompletedReps] = useState<number>(0);
-
+    
     return (
         <div>
             <div>{exercise.exercises.name}</div>
