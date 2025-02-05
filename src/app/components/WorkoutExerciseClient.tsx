@@ -3,20 +3,27 @@
 import { useState } from 'react';
 import WorkoutExercise from './WorkoutExercise';
 import { useRouter } from 'next/navigation';
+import { Database } from '@/../database.types';
+
+type Tables = Database['public']['Tables'];
+
+type Exercise = {
+    id: number;
+    name: string;
+    description: string;  // We'll ensure this is non-null before passing
+};
+
+type WorkoutExercise = {
+    target_sets: NonNullable<Tables['workout_exercises']['Row']['target_sets']>;
+    target_reps: NonNullable<Tables['workout_exercises']['Row']['target_reps']>;
+    exercise_id: Tables['workout_exercises']['Row']['exercise_id'];
+    exercises: Exercise;  // Using our non-nullable Exercise type
+};
 
 type Workout = {
-   id: number;
-   created_at: string;
-   workout_exercises: {
-       target_sets: number;
-       target_reps: number;
-       exercise_id: number;
-       exercises: {
-           id: number;
-           name: string;
-           description: string;
-       };
-   }[];
+    id: Tables['workouts']['Row']['id'];
+    created_at: NonNullable<Tables['workouts']['Row']['created_at']>;
+    workout_exercises: WorkoutExercise[];
 };
 
 type CompletedSet = {
@@ -27,26 +34,27 @@ type CompletedSet = {
 
 export default function WorkoutSessionClient({ initialWorkout }: { initialWorkout: Workout }) {
    const [completedSets, setCompletedSets] = useState<CompletedSet[]>([]);
-    const router = useRouter();
+   const router = useRouter();
 
-    const handleWorkoutComplete = async () => {
-        try {
-            const response = await fetch('/api/workouts/complete-workout', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    workoutId: initialWorkout.id,
-                    completedSets: completedSets
-                })
-            });
-
-            if (!response.ok) throw new Error('Failed to save workout');
-            router.push('/history');
-        } catch (error) {
-            console.error(error);
-            alert('Failed to save workout');
-        }   
-    };
+   const handleWorkoutComplete = async () => {
+       try {
+           const response = await fetch('/api/workouts/complete-workout', {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+               },
+               body: JSON.stringify({
+                   workoutId: initialWorkout.id,
+                   completedSets: completedSets
+               })
+           });
+           if (!response.ok) throw new Error('Failed to save workout');
+           router.push('/history');
+       } catch (error) {
+           console.error(error);
+           alert('Failed to save workout');
+       }  
+   };
 
    const handleRepsUpdate = (exerciseId: number, setIndex: number, reps: number) => {
        setCompletedSets(prev => {
@@ -69,7 +77,7 @@ export default function WorkoutSessionClient({ initialWorkout }: { initialWorkou
                <div key={exercise.exercise_id}>
                    {[...Array(exercise.target_sets)].map((_, setIndex) => (
                        <WorkoutExercise
-                           key={setIndex}
+                           key={`${exercise.exercise_id}-${setIndex}`}
                            exercise={exercise}
                            setIndex={setIndex}
                            onRepsUpdate={handleRepsUpdate}
@@ -81,4 +89,3 @@ export default function WorkoutSessionClient({ initialWorkout }: { initialWorkou
        </div>
    );
 }
-
