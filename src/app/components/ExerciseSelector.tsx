@@ -1,14 +1,21 @@
 "use client"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import styles from "./ExerciseSelector.module.css";
+import { Database } from '@/../database.types';
 
-export default function ExerciseSelector ({ exercises }) {
-    const Router = useRouter();
-    const [selectedExercises, setSelectedExercises] = useState([]);
+// Define types from your database schema
+type Exercise = Database['public']['Tables']['exercises']['Row'];
 
-    const handleSelect = (exercise: any) => {
+interface ExerciseSelectorProps {
+    exercises: Exercise[];
+}
+
+export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
+    const router = useRouter();  
+    const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
+
+    const handleSelect = (exercise: Exercise): void => {
         if (selectedExercises.includes(exercise)) {
             setSelectedExercises(selectedExercises.filter((e) => e !== exercise));
         } else {
@@ -16,14 +23,13 @@ export default function ExerciseSelector ({ exercises }) {
         }
     };
 
-    const startWorkout = async (selectedExercises: any) => {
-        console.log("selectedExercises", selectedExercises);
+    const startWorkout = async (selectedExercises: Exercise[]): Promise<void> => {
         if (selectedExercises.length === 0) {
             //FIXME: show error
             console.log("No exercises selected");
+            return;
         }
 
-        console.log("selectedExercises", selectedExercises);
         const response = await fetch('/api/workouts/create', {
             method: 'POST',
             headers: {
@@ -32,35 +38,37 @@ export default function ExerciseSelector ({ exercises }) {
             body: JSON.stringify({
                 exercises: selectedExercises
             })
-            })
+        });
 
         if (response.ok) {
             console.log("Workout created");
         } else {
-            console.log("Failed to create workout",response);
+            console.log("Failed to create workout", response);
         }
 
         setSelectedExercises([]);
-
         // FIXME: fix the redirect to a workout page
-        Router.push('/workouts/session');
+        router.push('/workouts/session');
     }
 
-    return(
+    return (
         <div>
             {exercises.map((exercise) => (
-                <div 
-                key={exercise.id} 
-                className={`${styles.exercise} ${selectedExercises.includes(exercise) ? styles.selected : ''}`}
-                onClick={() => {
-                    handleSelect(exercise);
-                }}
-            >
+                <div
+                    key={exercise.id}
+                    className={`${styles.exercise} ${selectedExercises.includes(exercise) ? styles.selected : ''}`}
+                    onClick={() => handleSelect(exercise)}
+                >
                     <div>{exercise.name} x{exercise.base_frequency}</div>
                     <div>{exercise.category}</div>
                 </div>
             ))}
-            <button onClick={() => startWorkout(selectedExercises)} disabled={selectedExercises.length === 0}>Start Workout with {selectedExercises.length} exercises</button>
+            <button 
+                onClick={() => startWorkout(selectedExercises)} 
+                disabled={selectedExercises.length === 0}
+            >
+                Start Workout with {selectedExercises.length} exercises
+            </button>
         </div>
-    )
+    );
 }
