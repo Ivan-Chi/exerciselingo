@@ -48,10 +48,10 @@ export async function POST(request: Request) {
        const exercisesWithOrder: WorkoutExercise[] = body.exercises.map((exercise, index) => ({
            workout_id: workout.id,
            exercise_id: exercise.id,
-           target_sets: exercise.base_frequency,
-           target_weight: exercise.base_weight,
+           target_sets: ,//this should be calculated off the actual
            target_reps: 0,
            order_in_workout: index + 1
+            // target_weight: exercise.base_weight,
        }));
 
        const { error: exercisesError } = await supabase

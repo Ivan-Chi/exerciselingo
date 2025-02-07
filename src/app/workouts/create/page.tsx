@@ -1,27 +1,41 @@
 import ExerciseSelector from "@/app/components/ExerciseSelector";
-import { createClient } from "@/utils/supabase/client";
+import { createClient } from "@/utils/supabase/server";
 import { PostgrestError } from '@supabase/supabase-js';
 
 export default async function CreateWorkout() {
     const supabase = await createClient();
 
-    const { data: workout_exercises, error } = await supabase
-    .from('workout_exercises')
-    .select(`
-        *,
-        workout_id:workouts(
-            *
-        )
-    `)
-    .limit(4);
+    const {data: baseExercises, error: baseExercisesError } = await supabase
+    .rpc('get_random_exercises', {num_exercises: 4});
+    
+    const exerciseWithHistory = [];
 
-    if (error) {
-        logError(error);
+    for (const exercise of baseExercises){
+        // for each exercise, fetch the last workout used with this exercise
+        const { data: lastWorkoutWithExercise, error } = await supabase
+        .from('workout_exercises')
+        .select(`
+            *,
+            workout_id:workouts(
+                *
+            ),
+            exercise_id:exercises(
+                *
+            )
+        `)
+        .eq('exercise_id', exercise.id)
+        .order('workout_id', { ascending: false })
+        .not('completed_at', 'is', null)
+        .limit(1)
+        .single();
+    
+        if (error) throw error;
+
+        exerciseWithHistory.push(lastWorkoutWithExercise);
     }
 
-    if (!workout_exercises || workout_exercises.length === 0) {
-        const {data: baseExercises, error: baseExercisesError } = await supabase
-        .rpc('get_random_exercises', {num_exercises: 4});
+    if (exerciseWithHistory.length !== 0) {
+
 
         if (baseExercisesError) {
             logError(baseExercisesError);
@@ -31,20 +45,17 @@ export default async function CreateWorkout() {
             logError(new Error('No base exercises found'));
         }
 
+        console.log(JSON.stringify(exerciseWithHistory));
         return (
             <div>
-                <ExerciseSelector exercises={baseExercises} />
+                <ExerciseSelector exercises={exerciseWithHistory} />
             </div>
         );
     }
 
-return (
-    <div>
-        <h1>Create Workout</h1>
-        
-        <ExerciseSelector exercises={workout_exercises} />
-    </div>
-    );
+    return (
+        <div> No exercises found </div>
+    )
 }
 
 const logError = (error : PostgrestError | null | Error) => {

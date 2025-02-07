@@ -2,20 +2,37 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import styles from "./ExerciseSelector.module.css";
-import { Database } from '@/../database.types';
+import { Database } from "@/../database.types"
 
-// Define types from your database schema
-type Exercise = Database['public']['Tables']['exercises']['Row'];
+type Tables = Database['public']['Tables'];
 
-interface ExerciseSelectorProps {
-    exercises: Exercise[];
+type Workout = Tables['workouts']['Row'];
+type Exercises = Tables['exercises']['Row'];
+
+type ExerciseWithHistory = {
+    workout_id: Workout;
+    exercise_id: Exercises,
+    order_in_workout: number;
+    target_sets: number;
+    target_reps: number;
+    target_weight?: number;
+    actual_sets?: number;
+    actual_reps?: number,
+    actual_weight?: number,
+    completed_at: Date;
 }
 
-export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
-    const router = useRouter();  
-    const [selectedExercises, setSelectedExercises] = useState<Exercise[]>([]);
+interface ExerciseSelectorProps {
+    exercises: ExerciseWithHistory[]
+  }
 
-    const handleSelect = (exercise: Exercise): void => {
+
+
+export default function ExerciseSelector({exercises}: ExerciseSelectorProps)  {
+    const router = useRouter();  
+    const [selectedExercises, setSelectedExercises] = useState<ExerciseWithHistory[]>([]);
+
+    const handleSelect = (exercise: ExerciseWithHistory): void => {
         if (selectedExercises.includes(exercise)) {
             setSelectedExercises(selectedExercises.filter((e) => e !== exercise));
         } else {
@@ -23,9 +40,8 @@ export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
         }
     };
 
-    const startWorkout = async (selectedExercises: Exercise[]): Promise<void> => {
+    const startWorkout = async (selectedExercises: ExerciseWithHistory[]): Promise<void> => {
         if (selectedExercises.length === 0) {
-            //FIXME: show error
             console.log("No exercises selected");
             return;
         }
@@ -47,7 +63,6 @@ export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
         }
 
         setSelectedExercises([]);
-        // FIXME: fix the redirect to a workout page
         router.push('/workouts/session');
     }
 
@@ -55,12 +70,12 @@ export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
         <div>
             {exercises.map((exercise) => (
                 <div
-                    key={exercise.id}
+                    key={exercise.exercise_id.id}
                     className={`${styles.exercise} ${selectedExercises.includes(exercise) ? styles.selected : ''}`}
                     onClick={() => handleSelect(exercise)}
                 >
-                    <div>{exercise.name} x{exercise.base_frequency}</div>
-                    <div>{exercise.category}</div>
+                    <div>{exercise.exercise_id.name} x{exercise.target_sets}</div>
+                    <div>{exercise.exercise_id.category}</div>
                 </div>
             ))}
             <button 
@@ -70,5 +85,5 @@ export default function ExerciseSelector({ exercises }: ExerciseSelectorProps) {
                 Start Workout with {selectedExercises.length} exercises
             </button>
         </div>
-    );
+    )
 }
