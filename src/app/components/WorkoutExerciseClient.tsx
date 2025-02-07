@@ -90,7 +90,7 @@ export default function WorkoutSessionClient({ initialWorkout }: { initialWorkou
        <div>
            <h1>Workout Session</h1>
            {initialWorkout.workout_exercises.map(exercise => (
-               <div key={exercise.exercise_id}>
+               <div key={`${exercise.exercise_id}}`}>
                    {[...Array(exercise.target_sets)].map((_, setIndex) => (
                        <WorkoutExercise
                            key={`${exercise.exercise_id}-${setIndex}`}

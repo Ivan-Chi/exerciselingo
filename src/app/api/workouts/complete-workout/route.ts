@@ -56,17 +56,7 @@ export async function POST(request: Request) {
 
         // Process each completed set
         for (const set of body.completedSets) {
-            const { data: existingRow } = await supabase
-            .from('workout_exercises')
-            .select('*')
-            .eq('workout_id', body.workoutId)
-            .eq('exercise_id', set.exerciseId)
-            .eq('order_in_workout', set.setIndex)
-            .single();
-
-            console.log('Existing row:', existingRow);
             const updateData = buildSetUpdate(set)  
-            console.log(updateData);
             const { error } = await supabase
                 .from('workout_exercises')
                 .update(updateData) 

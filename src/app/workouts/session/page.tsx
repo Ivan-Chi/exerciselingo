@@ -63,6 +63,7 @@ export default async function WorkoutSession() {
             )
         `)
         .order('created_at', { ascending: false })
+        .is('completed_at', null)
         .limit(1)
         .single();
 

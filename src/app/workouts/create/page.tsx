@@ -45,7 +45,6 @@ export default async function CreateWorkout() {
             logError(new Error('No base exercises found'));
         }
 
-        console.log(JSON.stringify(exerciseWithHistory));
         return (
             <div>
                 <ExerciseSelector exercises={exerciseWithHistory} />
