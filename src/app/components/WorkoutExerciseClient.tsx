@@ -29,11 +29,23 @@ type Workout = {
 type CompletedSet = {
    exerciseId: number;
    setIndex: number;
-   reps: number;
+   actualReps: number;
+   nextTargetReps?: number;
+   nextTargetSets?: number;
 };
 
 export default function WorkoutSessionClient({ initialWorkout }: { initialWorkout: Workout }) {
-   const [completedSets, setCompletedSets] = useState<CompletedSet[]>([]);
+    const [allSets, setAllSets] = useState<CompletedSet[]>(() => {
+        return initialWorkout.workout_exercises.flatMap(exercise => 
+          Array.from({ length: exercise.target_sets }, (_, i) => ({
+            exerciseId: exercise.exercise_id,
+            setIndex: i + 1,  
+            actualReps: 0,
+            nextTargetReps: exercise.target_reps,
+            nextTargetSets: exercise.target_sets
+          }))
+        );
+      });
    const router = useRouter();
 
    const handleWorkoutComplete = async () => {
@@ -45,7 +57,7 @@ export default function WorkoutSessionClient({ initialWorkout }: { initialWorkou
                },
                body: JSON.stringify({
                    workoutId: initialWorkout.id,
-                   completedSets: completedSets
+                   completedSets: allSets,
                })
            });
            if (!response.ok) throw new Error('Failed to save workout');
@@ -56,17 +68,21 @@ export default function WorkoutSessionClient({ initialWorkout }: { initialWorkou
        }  
    };
 
-   const handleRepsUpdate = (exerciseId: number, setIndex: number, reps: number) => {
-       setCompletedSets(prev => {
+// this is hit whenever reps are updated
+   const handleRepsUpdate = (exerciseId: number, setIndex: number, reps: number, target_reps?: number, target_sets?: number) => {
+    setAllSets(prev => {
            const existingSetIndex = prev.findIndex(
+            // Find completed sets with the same exerciseId and setIndex
                set => set.exerciseId === exerciseId && set.setIndex === setIndex
            );
+        //     If the set already exists, update its actualReps
            if (existingSetIndex >= 0) {
                const newSets = [...prev];
-               newSets[existingSetIndex] = { exerciseId, setIndex, reps };
+               newSets[existingSetIndex] = { exerciseId, setIndex, actualReps: reps , nextTargetReps: target_reps, nextTargetSets: target_sets};
                return newSets;
            }
-           return [...prev, { exerciseId, setIndex, reps }];
+        //     Otherwise, add a new set
+           return [...prev, { exerciseId, setIndex, actualReps: reps , nextTargetReps: target_reps, nextTargetSets: target_sets}];
        });
    };
 
