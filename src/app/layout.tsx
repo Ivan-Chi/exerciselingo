@@ -3,7 +3,6 @@ import "./globals.css";
 import { Chelsea_Market, Farro } from "next/font/google";
 import InitializeApp from '@/app/InitializeApp';
 import styles from "./page.module.css";
-import dynamic from 'next/dynamic';
 import NavSidebar from "./components/NavSidebar";
 import AppHeader from './components/AppHeader';
 
