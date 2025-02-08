@@ -4,13 +4,6 @@ import { Database } from '@/../database.types';
 import { updateTargetSets } from '@/utils/updateTargetSets';
 
 type Tables = Database['public']['Tables'];
-type WorkoutWithExercises = Tables['workouts']['Row'] & {
-    workout_exercises: (
-        Tables['workout_exercises']['Row'] & {
-            exercise: Tables['exercises']['Row']
-        }   
-    )[]
-}
 
 type WorkoutExercise = Tables['workout_exercises']['Row'] & {
     exercise: Tables['exercises']['Row']
