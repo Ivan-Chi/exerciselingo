@@ -28,8 +28,7 @@ type WorkoutExercise = Tables['workout_exercises']['Row']
 export async function POST(request: Request) {
    try {
        const body = await request.json() as RequestBody;
-       console.log(body);
-      
+             
        const supabase = await createClient();
       
        const { data: { user } } = await supabase.auth.getUser();

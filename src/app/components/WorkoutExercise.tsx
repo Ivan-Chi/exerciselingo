@@ -1,6 +1,8 @@
 "use client";
 import { useState } from 'react';
 
+// TODO: DEPRECATED 
+
 type WorkoutExerciseProps = {
     exercise: {
         target_sets: number;
