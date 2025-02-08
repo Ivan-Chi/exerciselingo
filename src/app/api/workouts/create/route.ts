@@ -15,7 +15,7 @@ type ExerciseWithHistory = {
     actual_sets?: number;
     actual_reps?: number,
     actual_weight?: number,
-    completed_at: Date;
+    completed_at?: Date;
 }
 
 interface RequestBody {
