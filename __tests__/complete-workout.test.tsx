@@ -1,4 +1,4 @@
-import { updateTargetSets } from "@/app/api/workouts/complete-workout/route";
+import { updateTargetSets } from '@/utils/updateTargetSets';
 import { Database } from '@/../database.types';
 
 type Tables = Database['public']['Tables'];
