@@ -28,7 +28,7 @@ type WorkoutExercise = Tables['workout_exercises']['Row']
 export async function POST(request: Request) {
    try {
        const body = await request.json() as RequestBody;
-             
+
        const supabase = await createClient();
       
        const { data: { user } } = await supabase.auth.getUser();
@@ -53,14 +53,6 @@ export async function POST(request: Request) {
        const exercisesWithOrder: WorkoutExercise[] = [];
        let orderCounter = 1;
        
-    //    body.exercises.map((exercise, index) => ({
-    //        workout_id: workout.id,
-    //        exercise_id: exercise.exercise_id.id,
-    //        target_sets: 1,
-    //        target_reps: 0,
-    //        order_in_workout: index + 1
-    //         // target_weight: exercise.base_weight,
-    //    }));
 
     for (const exerciseWithHistory of body.exercises) {
         // Create one entry for each set of the exercise

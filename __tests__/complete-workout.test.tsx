@@ -63,15 +63,15 @@ describe('updateTargetSets', () => {
   
     test('should decrease target reps slightly when completion rate is between 80% and 90%', () => {
       // Create a workout where actual reps are slightly below target
-      const workout = createMockWorkoutWithExercises(1, 9, 10, 4);
+      const workout = createMockWorkoutWithExercises(1, 13, 15, 4);
       
       const result = updateTargetSets(workout);
       
       // Check that target reps were decreased by 0.1 and rounded
-      expect(result.workout_exercises[0].target_reps).toBe(9);
-      expect(result.workout_exercises[1].target_reps).toBe(9);
-      expect(result.workout_exercises[2].target_reps).toBe(9);
-      expect(result.workout_exercises[2].target_reps).toBe(9);
+      expect(result.workout_exercises[0].target_reps).toBe(14);
+      expect(result.workout_exercises[1].target_reps).toBe(14);
+      expect(result.workout_exercises[2].target_reps).toBe(14);
+      expect(result.workout_exercises[2].target_reps).toBe(14);
     });
   
     test('should increase target reps when completion rate is 100% or higher', () => {
