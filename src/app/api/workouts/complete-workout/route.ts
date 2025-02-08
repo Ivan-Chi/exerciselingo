@@ -73,6 +73,7 @@ export async function POST(request: Request) {
 export function updateTargetSets(workoutWithExercises: WorkoutWithExercises) {
     const exerciseGroups: ExerciseGroups = {};
     
+    // Group exercises
     workoutWithExercises.workout_exercises.forEach(exercise => {
       if (!exerciseGroups[exercise.exercise_id]) {
         exerciseGroups[exercise.exercise_id] = [];
@@ -80,20 +81,31 @@ export function updateTargetSets(workoutWithExercises: WorkoutWithExercises) {
       exerciseGroups[exercise.exercise_id].push(exercise);
     });
   
+    // Update target reps for each group
     Object.values(exerciseGroups).forEach(exercises => {
-      exercises.forEach(exercise => {
+      // Calculate average completion rate for the group
+      const groupCompletionRate = exercises.reduce((sum, exercise) => {
         const actualReps = exercise.actual_reps ?? 0;
         const totalTargetReps = exercise.target_reps * exercise.target_sets;
-        const totalActualReps = actualReps * exercise.target_sets; // Using target_sets since actual_sets is null
-        const completionRate = totalActualReps / totalTargetReps;
+        const totalActualReps = actualReps * exercise.target_sets;
+        return sum + (totalActualReps / totalTargetReps);
+      }, 0) / exercises.length;
   
-        if (completionRate < 0.8) {
-          exercise.target_reps = Math.max(1, Math.floor(exercise.target_reps - 1));
-        } else if (completionRate >= 0.8 && completionRate < 0.9) {
-          exercise.target_reps = Math.max(1, Math.floor(exercise.target_reps - 1));
-        } else if (completionRate >= 1) {
-          exercise.target_reps = Math.floor(exercise.target_reps + 1);
-        }
+      // Determine new target reps based on group performance
+      let newTargetReps: number;
+      if (groupCompletionRate < 0.8) {
+        newTargetReps = Math.max(1, Math.floor(exercises[0].target_reps - 1));
+      } else if (groupCompletionRate >= 0.8 && groupCompletionRate < 0.9) {
+        newTargetReps = Math.max(1, Math.floor(exercises[0].target_reps - 1));
+      } else if (groupCompletionRate >= 1) {
+        newTargetReps = Math.floor(exercises[0].target_reps + 1);
+      } else {
+        newTargetReps = exercises[0].target_reps;
+      }
+  
+      // Apply same target reps to all exercises in group
+      exercises.forEach(exercise => {
+        exercise.target_reps = newTargetReps;
       });
     });
   

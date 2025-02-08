@@ -74,7 +74,8 @@ export default function ExerciseSelector({exercises}: ExerciseSelectorProps)  {
                     className={`${styles.exercise} ${selectedExercises.includes(exercise) ? styles.selected : ''}`}
                     onClick={() => handleSelect(exercise)}
                 >
-                    <div>{exercise.exercise_id.name} x{exercise.target_sets}</div>
+                    <div>{exercise.exercise_id.name}</div>
+                    <div>{exercise.target_sets} sets with {exercise.target_reps} reps per set</div>
                     <div>{exercise.exercise_id.category}</div>
                 </div>
             ))}
