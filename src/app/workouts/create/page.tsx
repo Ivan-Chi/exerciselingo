@@ -1,7 +1,8 @@
 import ExerciseSelector from "@/app/components/ExerciseSelector";
 import { createClient } from "@/utils/supabase/server";
 import { PostgrestError } from '@supabase/supabase-js';
-import { Database } from "@/../database.types"
+import { Database } from "@/../database.types";
+import styles from "./page.module.css";
 
 type Tables = Database['public']['Tables'];
 
@@ -114,7 +115,4 @@ function createWorkoutWithExercises( exercise: Exercises, userID?: string){
     };
     
     return workoutWithExercise;
-    console.log(exercise);
-
-
 }

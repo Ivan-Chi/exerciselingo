@@ -9,3 +9,8 @@
     border: 2px solid blue;
     background-color: red;
 }
+
+.workoutButton{
+    font-size: 1.5rem;
+    width: 100%;
+}

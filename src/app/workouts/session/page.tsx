@@ -11,23 +11,6 @@ type WorkoutWithExercises = Tables['workouts']['Row'] & {
     )[]
 }
 
-export default async function WorkoutSession() {
-    const workout:WorkoutWithExercises = await getWorkout();
-
-    if (!workout) {
-        return (
-            <div>
-                <h1>Workout Session</h1>
-                <div>No workout found</div>
-            </div>
-        );
-    }
-    
-    return (
-        <WorkoutSessionClient workoutWithExercises={workout} />
-    );
-}
-
 async function getWorkout(){
     const supabase = await createClient();
 
@@ -50,4 +33,21 @@ async function getWorkout(){
     if (error) { throw error }
 
     return workout;
+}
+
+export default async function WorkoutSession() {
+    const workout:WorkoutWithExercises = await getWorkout();
+
+    if (!workout) {
+        return (
+            <div>
+                <h1>Workout Session</h1>
+                <div>No workout found</div>
+            </div>
+        );
+    }
+    
+    return (
+        <WorkoutSessionClient workoutWithExercises={workout} />
+    );
 }

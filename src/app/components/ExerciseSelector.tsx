@@ -67,7 +67,7 @@ export default function ExerciseSelector({exercises}: ExerciseSelectorProps)  {
     }
 
     return (
-        <div>
+        <div className={styles.content}>
             {exercises.map((exercise) => (
                 <div
                     key={exercise.exercise_id.id}
@@ -82,6 +82,7 @@ export default function ExerciseSelector({exercises}: ExerciseSelectorProps)  {
             <button 
                 onClick={() => startWorkout(selectedExercises)} 
                 disabled={selectedExercises.length === 0}
+                className={styles.workoutButton}
             >
                 Start Workout with {selectedExercises.length} exercises
             </button>

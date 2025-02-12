@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Database } from '@/../database.types';
+import styles from "./WorkoutExerciseClient.module.css"; 
 
 type Tables = Database['public']['Tables'];
 type WorkoutWithExercises = Tables['workouts']['Row'] & {
@@ -63,34 +64,45 @@ export default function WorkoutSessionClient({workoutWithExercises}: {workoutWit
 
    return (
        <div>
-           <h1>Workout Session</h1>
-           {workoutWithExercises.workout_exercises.map(workoutExercise => (
-                <div key={`${workoutExercise.exercise_id}-${workoutExercise.order_in_workout}`}>
-                    Exercise {workoutExercise.order_in_workout} <br />
-                    {workoutExercise.exercise.name} <br />
-                    Target Reps: {workoutExercise.target_reps} <br />
-                    <input
-                        type="number"
-                        max="99"
-                        min="0"
-                        value={completedSets.get(getSetKey(
-                            workoutExercise.workout_id,
-                            workoutExercise.exercise_id,
-                            workoutExercise.order_in_workout
-                        )) || 0}
-                        onChange={(e) => {
-                            const newReps = Math.min(99, Math.max(0,Number(e.target.value)));
-                            updatePerformedReps(
-                                workoutExercise.workout_id,
-                                workoutExercise.exercise_id,
-                                workoutExercise.order_in_workout,
-                                newReps
-                            );
-                        }}
-                    />
-                </div>
-            ))}
-           <button onClick={completeWorkout}>Complete Workout</button>
+           <h1>Your Workout Session:</h1>
+           <div className={styles.container}>
+                <div className={styles.exerciseList}>
+                    {workoutWithExercises.workout_exercises.map(workoutExercise => (
+                        <div key={`${workoutExercise.exercise_id}-${workoutExercise.order_in_workout}`} className={styles.exercise}>
+                            <div className={styles.exerciseStats}>
+                                <div className={styles.exerciseTitle}>Exercise {workoutExercise.order_in_workout} </div> <br />
+                                <div className={styles.exerciseName}>{workoutExercise.exercise.name} </div> <br />
+                            </div>
+                            <div className={styles.exerciseReps}>
+                            Target Reps: {workoutExercise.target_reps} <br />
+                            <div className={styles.completedReps}>
+                                Completed Reps:
+                                <input
+                                    type="number"
+                                    max="99"
+                                    min="0"
+                                    value={completedSets.get(getSetKey(
+                                        workoutExercise.workout_id,
+                                        workoutExercise.exercise_id,
+                                        workoutExercise.order_in_workout
+                                    )) || 0}
+                                    onChange={(e) => {
+                                        const newReps = Math.min(99, Math.max(0,Number(e.target.value)));
+                                        updatePerformedReps(
+                                            workoutExercise.workout_id,
+                                            workoutExercise.exercise_id,
+                                            workoutExercise.order_in_workout,
+                                            newReps
+                                        );
+                                    }}
+                                />
+                            </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>  
+             <button onClick={completeWorkout} className={styles.workoutButton}>Complete Workout</button>
+           </div>
        </div>
    );
 }

@@ -8,7 +8,7 @@ export default async function AppHeader() {
     if(!user) {
         return (
         <div className={styles.appHeader}>
-            <h1>Title Placeholder</h1>
+            <h1>ExerciseLingo</h1>
             <div className={styles.appHeaderButtons}>
                 <a href="/register">Register</a>
                 <a href="/login">Login</a>
@@ -19,7 +19,7 @@ export default async function AppHeader() {
 
     return (
         <div className={styles.appHeader}>
-            <h1>Title Placeholder</h1>
+            <h1>ExerciseLingo</h1>
             <div>Welcome {user.email}</div>
         </div>
     );

@@ -1,0 +1,41 @@
+.workoutButton {
+    font-size: 1.5rem;
+    display: grid;
+    width: 100%;
+}
+
+.exercise{
+    display: grid;
+    background-color: lightcoral;
+    margin: 1rem;
+    padding: 1rem;
+}
+
+.exerciseTitle{
+    font-size: 1rem;
+}
+
+.exerciseName{
+    font-size: 1.5rem;
+    color: blue;
+}
+
+.exerciseStats{
+    display: flex;
+    flex-direction: column;
+}
+
+.exerciseReps{
+    display: flex;
+    flex-direction: column;
+}
+
+
+.completedReps{
+    display: flex;
+}
+
+.exerciseList{
+    display: grid;
+    grid-template-columns: auto auto auto;
+}
